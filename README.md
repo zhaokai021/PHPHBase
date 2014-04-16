@@ -19,7 +19,7 @@ $cli->insert("hbasephp",array(
  "efg"=>array("fm:efg"=>"456"),
  
  ));
-print_r($cli->queryByStartAndStopKey("hbasephp","abc","zzz",array("fm"))); 
+print_r($cli->queryByStartAndStopKey("hbasephp","abc","zzz",array("fm"),10)); 
 
 
 ?>  

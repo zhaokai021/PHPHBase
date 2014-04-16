@@ -117,7 +117,7 @@ class ThriftPHP {
       public function query($table,$rows,$columns,$attributes=array()){
           try{
 				
-              return $this->client->getRowsWithColumns($table,$rows,$columns,$attributes);
+              return $this->fetchArray($this->client->getRowsWithColumns($table,$rows,$columns,$attributes));
 
           } catch ( Exception $e) {
              throw $e;
@@ -195,14 +195,15 @@ class ThriftPHP {
 	  *@param startRow 起始主键
 	  *@param stopRow 结束主键
 	  *@param columns 列簇名数组
+	  *@param rows 最大读取行数
 	  *@throw Exception
 	  *@return array
 	  */
-	  public function queryByStartAndStopKey($table, $startRow, $stopRow, $columns, $attributes=array()){
+	  public function queryByStartAndStopKey($table, $startRow, $stopRow,$columns,$rows,$attributes=array()){
 	  
 	  try{
 		    $scanid=$this->client->scannerOpenWithStop($table, $startRow, $stopRow, $columns, $attributes);
-			$result=$this->fetchArray($this->client->scannerGet($scanid));
+			$result=$this->fetchArray($this->client->scannerGetList($scanid,$rows));
 			$this->client->scannerClose($scanid);
 			return $result;
         }catch(Exception $e){
